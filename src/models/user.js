@@ -4,6 +4,7 @@ const Usuario = mongoose.model('Usuario', {
         nombre: {
             type: String,
             required: true,
+            minlength: 5,
             trim: true,
         },
         correo: {
@@ -16,6 +17,13 @@ const Usuario = mongoose.model('Usuario', {
                 if (!v.isEmail(c)) {
                     throw new Error('correo invalido')
                 }
+            }
+        },
+        edad: {
+            type: Number,
+            default: 0,
+            validate(e) {
+                if (e < 0) { throw new Error('la edad deb ser positiva') }
             }
         },
         pase: {
