@@ -31,4 +31,27 @@ router.get('/u/:id', async(req, res) => {
         res.status(500).send(e)
     }
 })
+router.patch('/u/:id', async(req, res) => {
+    const _id = req.params.id;
+    const campos = Object.keys(req.body)
+    const camposP = ['nombre', 'correo', 'edad', 'pase']
+    const esValido = campos.every(c => camposP.includes(c))
+    if (!esValido) { return res.status(400).send({ e: 'updte invalido' }) }
+    try {
+        const user = await User.findByIdAndUpdate(_id, req.body, { new: true, runValidators: true })
+        if (!user) { return res.status(404).send() }
+        res.send(user)
+    } catch (e) {
+        res.status(400).send()
+    }
+})
+router.delete('/u/:id', async(req, res) => {
+    try {
+        const user = await User.findByIdAndDelete(req.params.id)
+        if (!user) { return res.status(404).send() } // null
+        res.send(user);
+    } catch (e) {
+        res.status(500).send()
+    }
+});
 module.exports = router

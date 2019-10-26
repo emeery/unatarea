@@ -31,7 +31,26 @@ router.get('/t/:id', async(req, res) => {
         res.status(500).send(e)
     }
 });
-router.patch('', async(req, res) => {
-
+router.patch('/t/:id', async(req, res) => {
+    const _id = req.params.id;
+    const campos = Object.keys(req.body)
+    const camposP = ['descripcion', 'completo']
+    const valido = campos.every(t => camposP.includes(t))
+    if (!valido) { return res.status(400).send({ e: 'updte invalido' }) }
+    try {
+        const t = await Tarea.findByIdAndUpdate(_id, req.body, { new: true, runValidators: true })
+        if (!t) { return res.status(404).send() }
+        res.send(t);
+    } catch (e) { res.status(404).send(e); }
+});
+router.delete('/t/:id', async(req, res) => {
+    try {
+        const t = await Tarea.findByIdAndDelete(req.params.id)
+        console.log(t);
+        if (!t) { return res.status(404).send() }
+        res.send(t);
+    } catch (e) {
+        res.status(500).send(e)
+    }
 });
 module.exports = router
