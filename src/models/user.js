@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const v = require('validator')
+const crypt = require('bcryptjs')
 const userEsquema = mongoose.Schema({
     nombre: {
         type: String,
@@ -39,9 +40,13 @@ const userEsquema = mongoose.Schema({
     },
 })
 
-userEsquema.pre('save', async function(next) {
+userEsquema.pre('save', async function(next) { //post
     const user = this
-
+    console.log('us', user);
+    if (user.isModified()) {
+        user.pase = await crypt.hash(user.pase, 8)
+    }
+    next()
 })
 
 const Usuario = mongoose.model('Usuario', userEsquema)
