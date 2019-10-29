@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const Tarea = mongoose.model('Tarea', {
+const esquemaTarea = mongoose.Schema({
     descripcion: {
         type: String,
         required: true,
@@ -11,4 +11,10 @@ const Tarea = mongoose.model('Tarea', {
         default: false
     }
 })
+
+esquemaTarea.pre('save', async function(next) {
+    console.log('ju', this);
+})
+
+const Tarea = mongoose.model('Tarea', esquemaTarea)
 module.exports = Tarea

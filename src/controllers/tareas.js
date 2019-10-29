@@ -38,8 +38,10 @@ router.patch('/t/:id', async(req, res) => {
     const valido = campos.every(t => camposP.includes(t))
     if (!valido) { return res.status(400).send({ e: 'updte invalido' }) }
     try {
-        const t = await Tarea.findByIdAndUpdate(_id, req.body, { new: true, runValidators: true })
+        const t = await Tarea.findById(_id)
+        campos.forEach(c => t[c] = req.body[c])
         if (!t) { return res.status(404).send() }
+        await t.save()
         res.send(t);
     } catch (e) { res.status(404).send(e); }
 });

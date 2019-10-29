@@ -42,13 +42,21 @@ const userEsquema = mongoose.Schema({
 
 userEsquema.pre('save', async function(next) { //post
     const user = this
-    console.log('us', user);
-    if (user.isModified()) {
+        // console.log('j', user.isModified('pase'));
+        // if (!user.isModified('pase')) return next()
+    if (user.isModified('pase')) {
         user.pase = await crypt.hash(user.pase, 8)
     }
     next()
 })
+userEsquema.statics.findC = async(c, pase) => {
+    const user = await User.findOne({ correo: c })
+    const esV = await crypt.compare(pase, user.pase)
+    if (!esV) { throw new Error('no se pudo loguear') }
+    return user;
+}
 
-const Usuario = mongoose.model('Usuario', userEsquema)
-    // const Usuario = mongoose.model('Usuario', {})
-module.exports = Usuario
+// userEsquema.pre('update')
+// const Usuario = mongoose.model('Usuario', {})
+const User = mongoose.model('Usuario', userEsquema)
+module.exports = User

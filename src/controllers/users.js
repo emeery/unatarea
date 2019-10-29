@@ -19,6 +19,14 @@ router.get('/listausuarios', async(req, res) => {
         res.send(500).send()
     }
 })
+router.post('/u/login', async(req, res) => {
+    try {
+        const user = await User.findC(req.body.correo, req.body.pase)
+        res.send(user);
+    } catch (e) {
+        res.status(400).send()
+    }
+});
 router.get('/u/:id', async(req, res) => {
     const _id = req.params.id;
     try {
