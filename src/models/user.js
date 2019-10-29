@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const v = require('validator')
 const crypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 const userEsquema = mongoose.Schema({
     nombre: {
         type: String,
@@ -38,6 +39,12 @@ const userEsquema = mongoose.Schema({
             }
         }
     },
+    tokens: [{
+        token: {
+            type: String,
+            required: true
+        }
+    }]
 })
 
 userEsquema.pre('save', async function(next) { //post
@@ -50,13 +57,19 @@ userEsquema.pre('save', async function(next) { //post
     next()
 })
 userEsquema.statics.findC = async(c, pase) => {
-    const user = await User.findOne({ correo: c })
+    const user = await User.findOne({ correo: c }) //
     const esV = await crypt.compare(pase, user.pase)
     if (!esV) { throw new Error('no se pudo loguear') }
     return user;
 }
+userEsquema.methods.getT = async function() { // 
+    const user = this
+    const t = jwt.sign({ correo: user.correo }, 'la_llave')
+    user.tokens = user.tokens.concat({ token: t })
+    await user.save()
+    return t
+}
 
-// userEsquema.pre('update')
 // const Usuario = mongoose.model('Usuario', {})
 const User = mongoose.model('Usuario', userEsquema)
 module.exports = User

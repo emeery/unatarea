@@ -2,11 +2,12 @@ const express = require('express')
 const router = new express.Router()
 const User = require('../models/user')
 const mongoose = require('mongoose')
-router.post('/u', async(req, res) => {
-    const me = new User(req.body)
+router.post('/u/signup', async(req, res) => {
+    const user = new User(req.body)
     try {
-        await me.save()
-        res.status(200).send(me);
+        await user.save()
+        const token = await user.getT()
+        res.status(200).send({ user, token });
     } catch (e) {
         res.status(400).send(e)
     }
@@ -22,9 +23,10 @@ router.get('/listausuarios', async(req, res) => {
 router.post('/u/login', async(req, res) => {
     try {
         const user = await User.findC(req.body.correo, req.body.pase)
-        res.send(user);
+        const token = await user.getT()
+        res.send({ user, token })
     } catch (e) {
-        res.status(400).send()
+        res.status(400).send({ m: 'crede I' })
     }
 });
 router.get('/u/:id', async(req, res) => {
