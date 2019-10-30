@@ -47,7 +47,7 @@ const userEsquema = mongoose.Schema({
     }]
 })
 
-userEsquema.pre('save', async function(next) { //post
+userEsquema.pre('save', async function(next) { // 
     const user = this
         // console.log('j', user.isModified('pase'));
         // if (!user.isModified('pase')) return next()
@@ -64,7 +64,7 @@ userEsquema.statics.findC = async(c, pase) => {
 }
 userEsquema.methods.getT = async function() { // 
     const user = this
-    const t = jwt.sign({ correo: user.correo }, 'la_llave')
+    const t = jwt.sign({ correo: user.correo, _id: user._id.toString() }, 'la_llave')
     user.tokens = user.tokens.concat({ token: t })
     await user.save()
     return t
