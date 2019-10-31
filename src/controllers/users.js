@@ -8,19 +8,19 @@ router.post('/u/signup', async(req, res) => {
     try {
         await user.save()
         const token = await user.getT()
-        res.status(200).send({ user, token });
+        res.status(201).send({ user, token });
     } catch (e) {
         res.status(400).send(e)
     }
 })
-router.get('/me', aut, async(req, res) => {
+router.get('/u/me', aut, async(req, res) => {
     res.send(req.userr);
 })
 router.post('/u/login', async(req, res) => {
     try {
         const user = await User.findC(req.body.correo, req.body.pase)
         const token = await user.getT()
-        res.send({ user, token })
+        res.status(200).send({ user, token })
     } catch (e) {
         res.status(400).send({ m: 'crede I' })
     }

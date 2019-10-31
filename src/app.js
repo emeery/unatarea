@@ -8,8 +8,8 @@ const app = express()
 const p = process.env.PORT || 8082
 
 app.use(express.json()) // u
-app.use(tareasRouter);
-app.use(usersRouter);
+app.use(tareasRouter)
+app.use(usersRouter)
 
 // const ut = async() => {
 //     try {
