@@ -24,6 +24,23 @@ router.post('/u/login', async(req, res) => {
     } catch (e) {
         res.status(400).send({ m: 'crede I' })
     }
+})
+router.post('/u/logout', aut, async(req, res) => {
+    try {
+        // req.tokenn, req.userr.tokens
+        req.userr.tokens = req.userr.tokens.filter(t => {
+            return t.token !== req.tokenn // sin tokenn
+        })
+        await req.userr.save()
+        res.send('logout')
+    } catch (e) { res.status(500).send(e) }
+})
+router.post('/u/logoutall', aut, async(req, res) => {
+    try {
+        req.userr.tokens = []
+        await req.userr.save()
+        res.send()
+    } catch (e) { res.status(500).send() }
 });
 router.get('/u/:id', async(req, res) => {
     const _id = req.params.id;
@@ -60,5 +77,5 @@ router.delete('/u/:id', async(req, res) => {
     } catch (e) {
         res.status(500).send(e)
     }
-});
+})
 module.exports = router

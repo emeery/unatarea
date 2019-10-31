@@ -69,7 +69,13 @@ userEsquema.methods.getT = async function() { //
     await user.save()
     return t
 }
-
-// const Usuario = mongoose.model('Usuario', {})
+userEsquema.methods.toJSON = function() {
+        const user = this
+        userP = user.toObject()
+        delete userP.pase
+        delete userP.tokens
+        return userP
+    }
+    // const Usuario = mongoose.model('Usuario', {})
 const User = mongoose.model('Usuario', userEsquema)
 module.exports = User
