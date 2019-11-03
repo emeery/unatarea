@@ -49,8 +49,6 @@ const userEsquema = mongoose.Schema({
 
 userEsquema.pre('save', async function(next) { // 
     const user = this
-        // console.log('j', user.isModified('pase'));
-        // if (!user.isModified('pase')) return next()
     if (user.isModified('pase')) {
         user.pase = await crypt.hash(user.pase, 8)
     }

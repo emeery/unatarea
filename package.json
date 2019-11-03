@@ -11,6 +11,9 @@
     "author": "Gerardo Bautista",
     "license": "ISC",
     "dependencies": {
+        "@angular/animations": "^8.2.13",
+        "@angular/cdk": "^8.2.3",
+        "@angular/material": "^8.2.3",
         "bcryptjs": "^2.4.3",
         "express": "^4.16.4",
         "jsonwebtoken": "^8.5.1",

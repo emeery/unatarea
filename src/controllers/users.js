@@ -35,6 +35,10 @@ router.post('/u/logout', aut, async(req, res) => {
         res.send('logout')
     } catch (e) { res.status(500).send(e) }
 })
+router.post('/u/ecole/:id', (req, res) => {
+    const _id = req.params.id
+    console.log('id', _id);
+});
 router.post('/u/logoutall', aut, async(req, res) => {
     try {
         req.userr.tokens = []
