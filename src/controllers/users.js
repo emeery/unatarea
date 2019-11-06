@@ -35,10 +35,6 @@ router.post('/u/logout', aut, async(req, res) => {
         res.send('logout')
     } catch (e) { res.status(500).send(e) }
 })
-router.post('/u/ecole/:id', (req, res) => {
-    const _id = req.params.id
-    console.log('id', _id);
-});
 router.post('/u/logoutall', aut, async(req, res) => {
     try {
         req.userr.tokens = []
@@ -46,38 +42,24 @@ router.post('/u/logoutall', aut, async(req, res) => {
         res.send()
     } catch (e) { res.status(500).send() }
 });
-router.get('/u/:id', async(req, res) => {
-    const _id = req.params.id;
-    try {
-        if (!mongoose.Types.ObjectId.isValid(_id)) {
-            return res.status(404).send()
-        }
-        const user = await User.findById(_id)
-        res.send(user);
-    } catch (e) {
-        res.status(500).send(e)
-    }
-})
-router.patch('/u/:id', async(req, res) => {
+// router.p(/:id)
+router.patch('/u/me', aut, async(req, res) => {
     const campos = Object.keys(req.body)
     const camposP = ['nombre', 'correo', 'edad', 'pase']
     const esV = campos.every(c => camposP.includes(c))
     if (!esV) { return res.status(400).send({ m: 'no update :(' }) }
-    try {
-        const user = await User.findById(req.params.id)
-        campos.forEach(c => user[c] = req.body[c]) // s
-        await user.save()
-        if (!user) { return res.status(404).send({ m: 'user not found' }) }
-        res.send(user)
+    try { // ey
+        campos.forEach(c => req.userr[c] = req.body[c]) // s
+        await req.userr.save()
+        res.send(req.userr)
     } catch (e) {
         res.status(400).send(e)
     }
 })
-router.delete('/u/:id', async(req, res) => {
+router.delete('/u/me', aut, async(req, res) => {
     try {
-        const user = await User.findByIdAndDelete(req.params.id)
-        if (!user) { return res.status(404).send({ m: 'user not found' }) } // null
-        res.send({ m: 'file deleted' });
+        await req.userr.remove()
+        res.send(req.userr)
     } catch (e) {
         res.status(500).send(e)
     }
