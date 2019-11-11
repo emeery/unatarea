@@ -68,12 +68,17 @@ userEsquema.methods.getT = async function() { //
     return t
 }
 userEsquema.methods.toJSON = function() {
-        const user = this
-        userP = user.toObject()
-        delete userP.pase
-        delete userP.tokens
-        return userP
-    }
+    const user = this
+    userP = user.toObject()
+    delete userP.pase
+    delete userP.tokens
+    return userP
+}
+userEsquema.virtual('tareap', {
+        ref: 'Tarea',
+        localField: '_id',
+        foreignField: 'user'
+    })
     // const Usuario = mongoose.model('Usuario', {})
 const User = mongoose.model('Usuario', userEsquema)
 module.exports = User

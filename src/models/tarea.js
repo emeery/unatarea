@@ -9,12 +9,14 @@ const esquemaTarea = mongoose.Schema({
     completo: {
         type: Boolean,
         default: false
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Usuario'
     }
 })
 
-esquemaTarea.pre('save', async function(next) {
-    console.log('ju', this);
-})
 
 const Tarea = mongoose.model('Tarea', esquemaTarea)
 module.exports = Tarea
