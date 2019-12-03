@@ -75,10 +75,11 @@ userEsquema.methods.toJSON = function() {
     return userP
 }
 userEsquema.virtual('tareap', {
-        ref: 'Tarea',
-        localField: '_id',
-        foreignField: 'user'
-    })
-    // const Usuario = mongoose.model('Usuario', {})
+    ref: 'Tarea',
+    localField: '_id',
+    foreignField: 'usersillo'
+})
+userEsquema.set('toObject', { virtuals: true });
+// const Usuario = mongoose.model('Usuario', {})
 const User = mongoose.model('Usuario', userEsquema)
 module.exports = User

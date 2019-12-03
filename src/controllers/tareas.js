@@ -5,7 +5,7 @@ const router = new express.Router()
 router.post('/t', aut, async(req, res) => {
     const t = new Tarea({
         ...req.body,
-        user: req.userr
+        usersillo: req.userr
     })
     try {
         await t.save()
@@ -18,7 +18,9 @@ router.post('/t', aut, async(req, res) => {
 });
 router.get('/ts', aut, async(req, res) => {
     try {
+        // console.log('e', req.userr);
         // const tsks = await Tarea.find({ user: req.userr._id })
+        console.log('re', req.userr);
         await req.userr.populate('tareap').execPopulate()
         res.status(200).send(req.userr.tareap)
     } catch (e) {
@@ -55,11 +57,11 @@ router.delete('/t/:id', aut, async(req, res) => {
     try {
         // const t = await Tarea.findByIdAndDelete(req.params.id)
         const t = await Tarea.findOneAndDelete({ _id: req.params.id, user: req.userr._id })
-        console.log(t);
         if (!t) { return res.status(404).send() }
         res.send(t);
     } catch (e) {
         res.status(500).send(e)
+
     }
 });
 module.exports = router

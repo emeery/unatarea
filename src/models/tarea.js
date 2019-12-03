@@ -10,7 +10,7 @@ const esquemaTarea = mongoose.Schema({
         type: Boolean,
         default: false
     },
-    user: {
+    usersillo: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'Usuario'

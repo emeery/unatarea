@@ -40,9 +40,8 @@ router.post('/u/logoutall', aut, async(req, res) => {
         await req.userr.save()
         res.send()
     } catch (e) { res.status(500).send() }
-});
-// router.p(/:id)
-router.patch('/u/me', aut, async(req, res) => {
+})
+router.patch('/u/me', aut, async(req, res) => { //:id)
     const campos = Object.keys(req.body)
     const camposP = ['nombre', 'correo', 'edad', 'pase']
     const esV = campos.every(c => camposP.includes(c))
