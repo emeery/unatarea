@@ -18,25 +18,17 @@ router.post('/t', aut, async(req, res) => {
 });
 router.get('/ts', aut, async(req, res) => {
     try {
-        // console.log('e', req.userr);
-        // const tsks = await Tarea.find({ user: req.userr._id })
-        console.log('re', req.userr);
         await req.userr.populate('tareap').execPopulate()
         res.status(200).send(req.userr.tareap)
-    } catch (e) {
-        res.status(500).send()
-    }
+    } catch (e) { res.status(500).send() }
 });
 router.get('/t/:id', aut, async(req, res) => {
     const _id = req.params.id
     try {
-        const t = await Tarea.findOne({ _id, user: req.userr._id })
+        const t = await Tarea.findOne({ _id, usersillo: req.userr._id })
         if (!t) { return res.status(404).send() }
-        res.send(t);
-
-    } catch (e) {
-        res.status(500).send(e)
-    }
+        res.send(t)
+    } catch (e) { res.status(500).send(e) }
 });
 router.patch('/t/:id', aut, async(req, res) => {
     const _id = req.params.id;
@@ -45,8 +37,10 @@ router.patch('/t/:id', aut, async(req, res) => {
     const valido = campos.every(t => camposP.includes(t))
     if (!valido) { return res.status(400).send({ e: 'updte invalido' }) }
     try {
-        // const t = await Tarea.findById(_id)
-        const t = await Tarea.findOne({ _id, user: req.userr._id })
+        const t = await Tarea.findOne({
+            _id,
+            usersillo: req.userr._id
+        })
         if (!t) { return res.status(404).send() }
         campos.forEach(c => t[c] = req.body[c])
         await t.save()
@@ -55,13 +49,12 @@ router.patch('/t/:id', aut, async(req, res) => {
 });
 router.delete('/t/:id', aut, async(req, res) => {
     try {
-        // const t = await Tarea.findByIdAndDelete(req.params.id)
-        const t = await Tarea.findOneAndDelete({ _id: req.params.id, user: req.userr._id })
+        const t = await Tarea.findOneAndDelete({
+            _id: req.params.id,
+            usersillo: req.userr._id
+        })
         if (!t) { return res.status(404).send() }
         res.send(t);
-    } catch (e) {
-        res.status(500).send(e)
-
-    }
+    } catch (e) { res.status(500).send(e) }
 });
 module.exports = router

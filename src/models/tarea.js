@@ -16,7 +16,5 @@ const esquemaTarea = mongoose.Schema({
         ref: 'Usuario'
     }
 })
-
-
 const Tarea = mongoose.model('Tarea', esquemaTarea)
 module.exports = Tarea

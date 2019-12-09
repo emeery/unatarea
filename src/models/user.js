@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const v = require('validator')
 const crypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const T = require('./tarea')
 const userEsquema = mongoose.Schema({
     nombre: {
         type: String,
@@ -52,6 +53,11 @@ userEsquema.pre('save', async function(next) { //
     if (user.isModified('pase')) {
         user.pase = await crypt.hash(user.pase, 8)
     }
+    next()
+})
+userEsquema.pre('remove', async function(next) {
+    const user = this
+    await T.deleteMany({ usersillo: user._id })
     next()
 })
 userEsquema.statics.findC = async(c, pase) => {
